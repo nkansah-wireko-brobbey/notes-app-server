@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpResponse;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/notes")
@@ -33,6 +34,18 @@ public class NoteController {
     public ResponseEntity<NoteDTO> getAllNotes() {
         System.out.println("Get all notes");
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}/notes")
+    public ResponseEntity<List<NoteDTO>> getAllNotesByUserId(@PathVariable Integer userId) throws InvalidArgumentException{
+        System.out.println("Get all notes by user id");
+
+        if (userId == null)
+            throw new InvalidArgumentException("User id is null", HttpStatus.BAD_REQUEST);
+
+        List<NoteDTO> allNotes = noteService.getAllNotes(userId);
+
+        return new ResponseEntity<>(allNotes,HttpStatus.OK);
     }
 
 

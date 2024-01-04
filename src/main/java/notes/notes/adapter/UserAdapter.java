@@ -10,9 +10,9 @@ public class UserAdapter {
         }
         return new User(
                 userDTO.getId(),
-                userDTO.getUsername(),
+                userDTO.getFirstName(),
+                userDTO.getLastName(),
                 userDTO.getPassword(),
-                userDTO.getName(),
                 userDTO.getEmail(),
                 userDTO.getRole()
         );
@@ -24,9 +24,9 @@ public class UserAdapter {
         }
         return new UserDTO(
                 user.getId(),
-                user.getUsername(),
+                user.getFirstName(),
+                user.getLastName(),
                 user.getPassword(),
-                user.getName(),
                 user.getEmail(),
                 user.getRole()
         );

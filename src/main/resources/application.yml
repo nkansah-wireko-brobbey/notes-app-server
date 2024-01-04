@@ -16,3 +16,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
 server:
   port: 9000
+
+jwt:
+  secret: 46a058ae25db9efe2cfeb17688aabab0cbbcd4b45cfcdd76a5a64bf97a55e67d
+  expiration: 86400000

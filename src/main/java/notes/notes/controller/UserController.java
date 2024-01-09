@@ -11,11 +11,9 @@ import notes.notes.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
@@ -25,7 +23,8 @@ public class UserController {
     private final AuthenticationService authenticationService;
 
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) throws InvalidArgumentException{
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO)
+            throws InvalidArgumentException{
         if (userDTO == null)
             throw new InvalidArgumentException("UserDTO is null", HttpStatus.BAD_REQUEST);
 
@@ -34,11 +33,14 @@ public class UserController {
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
     @PostMapping("/signup")
-    public JwtAuthenticationResponse signup(@RequestBody SignUpRequest request) throws InvalidArgumentException {
+    public JwtAuthenticationResponse signup(@RequestBody SignUpRequest request)
+            throws InvalidArgumentException {
+        System.out.println(request);
         return authenticationService.signup(request);
     }
     @PostMapping("/signin")
-    public JwtAuthenticationResponse signin(@RequestBody SignInRequest request) {
+    public JwtAuthenticationResponse signin(@RequestBody SignInRequest request)
+            throws InvalidArgumentException {
         return authenticationService.signin(request);
     }
 }

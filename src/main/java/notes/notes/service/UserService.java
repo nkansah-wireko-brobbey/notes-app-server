@@ -34,6 +34,28 @@ public class UserService {
         if (userDTO == null)
             throw new InvalidArgumentException("UserDTO is null", HttpStatus.BAD_REQUEST);
 
+        if (userDTO.getEmail() == null || userDTO.getEmail().isEmpty()){
+            throw new InvalidArgumentException("Email is null or empty", HttpStatus.BAD_REQUEST);
+        }
+
+        if (userDTO.getPassword() == null || userDTO.getPassword().isEmpty()){
+            throw new InvalidArgumentException("Password is null or empty", HttpStatus.BAD_REQUEST);
+        }
+
+        if (userDTO.getFirstName() == null || userDTO.getFirstName().isEmpty()){
+            throw new InvalidArgumentException("First name is null or empty", HttpStatus.BAD_REQUEST);
+        }
+
+        if (userDTO.getLastName() == null || userDTO.getLastName().isEmpty()){
+            throw new InvalidArgumentException("Last name is null or empty", HttpStatus.BAD_REQUEST);
+        }
+
+        Optional<User> userOptional = userRepository.findByEmail(userDTO.getEmail());
+
+        if (userOptional.isPresent()){
+            throw new InvalidArgumentException("User with this email already exists", HttpStatus.BAD_REQUEST);
+        }
+
         User user = userRepository.save(UserAdapter.getUserEntity(userDTO));
 
         return UserAdapter.getUserDTO(user);

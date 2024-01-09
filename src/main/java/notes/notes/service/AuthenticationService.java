@@ -9,6 +9,7 @@ import notes.notes.dto.SignInRequest;
 import notes.notes.dto.UserDTO;
 import notes.notes.exception.InvalidArgumentException;
 import notes.notes.repository.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,7 +27,8 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
 
-    public JwtAuthenticationResponse signup(SignUpRequest request) throws InvalidArgumentException {
+    public JwtAuthenticationResponse signup(SignUpRequest request)
+            throws InvalidArgumentException {
         var user = User
                 .builder()
                 .firstName(request.getFirstName())
@@ -45,11 +47,13 @@ public class AuthenticationService {
     }
 
 
-    public JwtAuthenticationResponse signin(SignInRequest request) {
+    public JwtAuthenticationResponse signin(SignInRequest request) throws InvalidArgumentException {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()));
         var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
+                .orElseThrow(() -> new InvalidArgumentException("Invalid email or password.", HttpStatus.UNAUTHORIZED));
         var jwt = jwtService.generateToken(user);
         return JwtAuthenticationResponse.builder().token(jwt).build();
     }

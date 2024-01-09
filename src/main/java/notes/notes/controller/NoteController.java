@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.http.HttpResponse;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/notes")
 public class NoteController {
@@ -31,9 +32,23 @@ public class NoteController {
     }
 
     @GetMapping
-    public ResponseEntity<NoteDTO> getAllNotes() {
+    public ResponseEntity<List<NoteDTO>> getAllNotes() {
         System.out.println("Get all notes");
-        return new ResponseEntity<>(HttpStatus.OK);
+        List<NoteDTO> allNotes = noteService.getAllNotes();
+
+        return new ResponseEntity<>(allNotes,HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<NoteDTO> getNoteById(@PathVariable Integer id) throws InvalidArgumentException{
+        System.out.println("Get note by id");
+
+        if (id == null)
+            throw new InvalidArgumentException("Note id is null", HttpStatus.BAD_REQUEST);
+
+        NoteDTO noteDTO = noteService.getNoteById(id);
+
+        return new ResponseEntity<>(noteDTO,HttpStatus.OK);
     }
 
     @GetMapping("/{userId}/notes")
@@ -43,11 +58,25 @@ public class NoteController {
         if (userId == null)
             throw new InvalidArgumentException("User id is null", HttpStatus.BAD_REQUEST);
 
-        List<NoteDTO> allNotes = noteService.getAllNotes(userId);
+        List<NoteDTO> allNotes = noteService.getAllNotes();
 
         return new ResponseEntity<>(allNotes,HttpStatus.OK);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<NoteDTO> updateNotesById(@PathVariable Integer id, @RequestBody NoteDTO noteDTO) throws InvalidArgumentException{
+        System.out.println("Update note by id");
+
+        if (id == null)
+            throw new InvalidArgumentException("User id is null", HttpStatus.BAD_REQUEST);
+
+        if (noteDTO == null)
+            throw new InvalidArgumentException("NoteDTO is null", HttpStatus.BAD_REQUEST);
+
+        NoteDTO updatedNote = noteService.updateNoteById(id, noteDTO);
+
+        return new ResponseEntity<>(updatedNote,HttpStatus.OK);
+    }
 
 
 

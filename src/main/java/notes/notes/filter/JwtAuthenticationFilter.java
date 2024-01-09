@@ -25,7 +25,7 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserService userService;
-    private JwtService jwtService;
+    private final JwtService jwtService;
 
     @Override
     protected void doFilterInternal(
@@ -44,12 +44,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         log.debug("jwt: {}", jwt);
 
         email = jwtService.extractUsername(jwt);
-
-        if (email.isEmpty() && SecurityContextHolder.getContext().getAuthentication() == null) {
+        System.out.println("Got hereeee");
+        System.out.println(email.isEmpty());
+        System.out.println(SecurityContextHolder.getContext().getAuthentication() == null);
+        if (!email.isEmpty() && SecurityContextHolder.getContext().getAuthentication() == null) {
+            System.out.println("Got hereeee 2222");
             UserDetails userDetails = userService.userDetailsService().loadUserByUsername(email);
+            System.out.println("uerdetails " + userDetails.getUsername());
             if (jwtService.isTokenValid(jwt, userDetails)) {
 
-                log.debug("UserDetails: {}", userDetails);
+                log.debug("UserDetails: {}", userDetails.getUsername());
                 SecurityContext context = SecurityContextHolder.createEmptyContext();
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails.getUsername(), null, userDetails.getAuthorities());

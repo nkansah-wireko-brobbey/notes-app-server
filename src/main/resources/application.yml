@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/final_project_ea?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/notes_app?useSSL=false&serverTimezone=UTC
     username: root
     password: root12345
     #    url: jdbc:mysql://eafinalproject.mysql.database.azure.com:3306/final_project_ea
@@ -9,7 +9,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
     properties:
       hibernate:

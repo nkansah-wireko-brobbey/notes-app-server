@@ -17,6 +17,7 @@ public class Note {
 
     private String title;
 
+    @Column(length = 5000)
     private String content;
 
     @ManyToOne

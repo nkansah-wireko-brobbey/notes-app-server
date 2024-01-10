@@ -39,7 +39,6 @@ public class NotesApplication implements CommandLineRunner {
 
         Map<RequestMappingInfo, HandlerMethod> mappings = handlerMapping.getHandlerMethods();
         for (RequestMappingInfo info : mappings.keySet()) {
-            assert info.getPatternsCondition() != null;
             System.out.println(info);
         }
     }

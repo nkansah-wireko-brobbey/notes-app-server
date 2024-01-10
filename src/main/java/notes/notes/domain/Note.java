@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Note {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String title;
